@@ -1,3 +1,4 @@
+//src/components/Result.js
 import React, { useState } from 'react';
 import { saveScore } from '../services/storageService';
 import Leaderboard from './Leaderboard';

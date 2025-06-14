@@ -1,5 +1,3 @@
-// server.js
-
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -18,43 +16,52 @@ mongoose.connect('mongodb://127.0.0.1:27017/quizdb', {
 .then(() => console.log("✅ Connected to MongoDB"))
 .catch(err => console.error("❌ MongoDB connection error:", err));
 
-// ✅ Define Question Schema & Model
+// ✅ Updated Question Schema
 const questionSchema = new mongoose.Schema({
   question: String,
   options: [String],
-  answer: String
+  answer: String,
+  category: String // ✅ Include this!
 });
 
 const Question = mongoose.model('Question', questionSchema);
 
-// ✅ GET Questions
+// ✅ GET Questions by Category
 app.get('/api/questions', async (req, res) => {
+  const category = req.query.category;
+
   try {
-    const questions = await Question.find();
+    const filter = category
+      ? { category: { $regex: new RegExp(category, 'i') } }
+      : {};
+
+    const questions = await Question.find(filter);
     res.json(questions);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch questions' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching questions' });
   }
 });
 
-// 🔧 TEMP Route to insert sample questions
+// 🔧 TEMP: Add sample questions
 app.post('/api/add-sample', async (req, res) => {
   await Question.insertMany([
     {
       question: "What is React?",
       options: ["Library", "Framework", "Language", "Tool"],
-      answer: "Library"
+      answer: "Library",
+      category: "React"
     },
     {
-      question: "Who maintains React?",
-      options: ["Facebook", "Google", "Microsoft", "Amazon"],
-      answer: "Facebook"
+      question: "What is Node.js?",
+      options: ["Framework", "Runtime", "Library", "Language"],
+      answer: "Runtime",
+      category: "NodeJS"
     }
   ]);
   res.send("✅ Sample questions added");
 });
 
-// 🚀 Start server
+// 🚀 Start Server
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 });

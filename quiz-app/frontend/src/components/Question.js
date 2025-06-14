@@ -1,3 +1,4 @@
+//src/components/Question.js
 import React from 'react';
 
 const Question = ({ data, onAnswer, qNum }) => (

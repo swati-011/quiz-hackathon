@@ -1,23 +1,24 @@
+// src/components/Quiz.js
 import React, { useEffect, useState } from 'react';
 import Question from './Question';
 import Result from './Result';
 import Timer from './Timer';
 
-const TIME_PER_QUESTION = 30; // seconds
+const TIME_PER_QUESTION = 30;
 
-const Quiz = () => {
+const Quiz = ({ category }) => {
   const [questions, setQuestions] = useState([]);
   const [current, setCurrent] = useState(0);
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
 
-  // Fetch questions from backend API
+  // Fetch questions from backend for selected category
   useEffect(() => {
-    fetch('http://localhost:5000/api/questions')
+    fetch(`http://localhost:5000/api/questions?category=${category}`)
       .then((res) => res.json())
       .then((data) => setQuestions(data))
       .catch((err) => console.error('Failed to load questions:', err));
-  }, []);
+  }, [category]);
 
   const nextQuestion = () => {
     if (current + 1 < questions.length) {
