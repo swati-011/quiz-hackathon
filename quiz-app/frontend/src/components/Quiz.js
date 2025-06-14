@@ -3,7 +3,7 @@ import Question from './Question';
 import Result from './Result';
 import Timer from './Timer';
 
-const TIME_PER_QUESTION = 15; // seconds
+const TIME_PER_QUESTION = 30; // seconds
 
 const Quiz = () => {
   const [questions, setQuestions] = useState([]);

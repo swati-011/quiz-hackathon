@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+ import React, { useEffect, useState } from 'react';
 import { fetchLeaderboard } from '../services/storageService';
 
 const Leaderboard = () => {
@@ -16,7 +16,11 @@ const Leaderboard = () => {
       <ol>
         {scores.map((s, i) => (
           <li key={i}>
-            {s.name}: {s.score}/{s.total}
+            <div className="score-info">
+              <div className="rank-circle">{i + 1}</div>
+              <span>{s.name}</span>
+            </div>
+            <span>{s.score}/{s.total}</span>
           </li>
         ))}
       </ol>
